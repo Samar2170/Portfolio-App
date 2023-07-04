@@ -14,11 +14,11 @@ class ParsedRoute {
 
   @override
   bool operator ==(Object other) {
-    return other is ParsedRoute &&
-        other.pathTemplate == pathTemplate &&
-        other.path == path &&
+    return other is ParsedRoute && 
+        other.pathTemplate==pathTemplate &&
+        other.path==path && 
         _mapEquality.equals(other.parameters, parameters) &&
-        _mapEquality.equals(queryParameters, other.queryParameters);
+        _mapEquality.equals(other.queryParameters, queryParameters);
   }
 
   @override

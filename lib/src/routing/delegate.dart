@@ -2,15 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'parsed_route.dart';
 import 'route_state.dart';
 
 
 class SimpleRouterDelegate extends RouterDelegate<ParsedRoute> 
-      with ChangeNotifier, PopNavigatorRouterDelegateMixin<ParsedRoute> {
-  final RouteState routeState;
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<ParsedRoute> {
+      final RouteState routeState;
   final WidgetBuilder builder;
 
   @override

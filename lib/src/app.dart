@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
-
 import 'auth.dart';
-import 'screens/navigator.dart';
 import 'routing.dart';
 
-
-
-class Bookstore extends StatefulWidget {
-  const Bookstore({super.key});
+class PortfolioManager extends StatefulWidget {
+  const PortfolioManager({super.key});
 
   @override
-  State<Bookstore> createState() => _BookstoreState();
+  State<PortfolioManager> createState() => _PortfolioManagerState();
 }
 
-class _BookstoreState extends State<Bookstore> {
-  final _auth = BookstoreAuth();
+class _PortfolioManagerState extends State<PortfolioManager> {
+  final _auth = PortfolioManagerAuth();  
   final _navigatorKey = GlobalKey<NavigatorState>();
   late final RouteState _routeState;
   late final SimpleRouterDelegate _routerDelegate;
   late final TemplateRouteParser _routeParser;
-  
+
+
   @override
   void initState() {
     _routeParser = TemplateRouteParser(
@@ -34,56 +31,35 @@ class _BookstoreState extends State<Bookstore> {
     _routerDelegate = SimpleRouterDelegate(
       routeState: _routeState,
       navigatorKey: _navigatorKey,
-      builder: (context) => BookstoreNavigator(
-        navigatorKey: _navigatorKey,
-      ),
-      );
-    
+      builder: (context) => Container(),
+    );
+
     _auth.addListener(_handleAuthStateChanged);
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return RouteStateScope(
-      notifier: _routeState,
-      child: BookstoreAuthScope(
-        notifier: _auth,
-        child: MaterialApp.router(
-          routerDelegate: _routerDelegate,
-          routeInformationParser: _routeParser,
-          theme: ThemeData(
-            pageTransitionsTheme: const PageTransitionsTheme(
-              builders: {
-                  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-                  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-                  TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-                  TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-                  TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-                },
-            )
-          ),
-        )
-      )
-    );
+    return const Placeholder();
+  }
+
+
+  void _handleAuthStateChanged() {
+    _routeState.go('/signin');
   }
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
     final signedIn = _auth.signedIn;
-    final signInRoute = ParsedRoute('/signin','/signin',{},{});
+    final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
 
-    if (!signedIn && from !=signInRoute) {
+    if (!signedIn && from != signInRoute) {
       return signInRoute;
     }
     else if (signedIn && from ==signInRoute) {
-      return ParsedRoute('/','/',{},{});
+      return ParsedRoute('/portfolio','/portfolio',{}, {});
     }
     return from;
-  }
 
-  void _handleAuthStateChanged() {
-    _routeState.go('/signin');
   }
 
   @override
@@ -94,3 +70,5 @@ class _BookstoreState extends State<Bookstore> {
     super.dispose();
   }
 }
+
+

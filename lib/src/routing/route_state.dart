@@ -1,9 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'parsed_route.dart';
 import 'parser.dart';
-
 
 class RouteState extends ChangeNotifier {
   final TemplateRouteParser _parser;
@@ -14,7 +12,7 @@ class RouteState extends ChangeNotifier {
   ParsedRoute get route => _route;
 
   set route(ParsedRoute route) {
-    if (_route == route) return;
+    if (_route==route) return;
     _route = route;
     notifyListeners();
   }
@@ -31,7 +29,7 @@ class RouteStateScope extends InheritedNotifier<RouteState> {
     super.key,
   });
 
-  static RouteState of(BuildContext context)  {
+  static RouteState of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<RouteStateScope>()!.notifier!;
   }
 }
