@@ -22,6 +22,9 @@ class _PortfolioManagerState extends State<PortfolioManager> {
     _routeParser = TemplateRouteParser(
       allowedPaths: [
         '/signin',
+        '/portfolio',
+        '/account',
+        '/add',
       ],
       guard: _guard,
       initialRoute: '/signin',
@@ -40,12 +43,28 @@ class _PortfolioManagerState extends State<PortfolioManager> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return RouteStateScope(notifier: _routeState, child: MaterialApp.router(
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _routeParser,
+      theme: ThemeData(
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+                  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                  TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+                  TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+                  TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+                },
+              ),
+            ),
+    ));
   }
 
 
   void _handleAuthStateChanged() {
-    _routeState.go('/signin');
+    if (!_auth.signedIn) {
+      _routeState.go('/signin');
+    } 
   }
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {

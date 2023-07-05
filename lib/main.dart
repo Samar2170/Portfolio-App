@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:portfolio_app/src/app.dart';
 import 'package:window_size/window_size.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'dart:io' show Platform;
 
 void main() {
   setHashUrlStrategy();
-  // runApp(const Bookstore());
+  runApp(const PortfolioManager());
 }
 
 
