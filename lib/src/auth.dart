@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'data.dart';
 class PortfolioManagerAuth extends ChangeNotifier {
   bool _signedIn = false;
   bool get signedIn => _signedIn;
@@ -11,12 +14,31 @@ class PortfolioManagerAuth extends ChangeNotifier {
   }
 
   Future<bool> signIn(String username, String password) async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-    // Future is just a placeholder for actual api call to simulate async call
-    // dummy method, here api call should be there to fetch token and then set it in shared preferences
-    _signedIn = true;
-    notifyListeners();
-    return _signedIn;
+    var response = await http.post(Uri.parse('http://127.0.0.1:8000/portfolio/login/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'username': username, 'password': password})
+    );
+    if (response.statusCode != 200) {
+      _signedIn = false;
+      notifyListeners();
+      return _signedIn;
+    } else {
+      final data = jsonDecode(response.body);
+      final token = data['access_token'];
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', token);
+      final user = User.fromJson(data);
+      print(user);
+      localStorage.setInt('user_id', user.user_id);
+      localStorage.setString('username', user.username);
+      localStorage.setString('email', user.email);
+
+      _signedIn = true;
+      notifyListeners();
+      return _signedIn;
+    }
   }
 
   @override
