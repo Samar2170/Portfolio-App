@@ -7,6 +7,7 @@ import 'dart:io' show Platform;
 
 void main() {
   setHashUrlStrategy();
+  setupWindow();
   runApp(const PortfolioManager());
 }
 

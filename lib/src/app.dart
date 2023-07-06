@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
 import 'routing.dart';
-
+import 'screens/navigator.dart';
 class PortfolioManager extends StatefulWidget {
   const PortfolioManager({super.key});
 
@@ -34,7 +34,9 @@ class _PortfolioManagerState extends State<PortfolioManager> {
     _routerDelegate = SimpleRouterDelegate(
       routeState: _routeState,
       navigatorKey: _navigatorKey,
-      builder: (context) => Container(),
+      builder: (context) => PortfolioMangerNavigator(
+        navigatorKey: _navigatorKey,
+      ),
     );
 
     _auth.addListener(_handleAuthStateChanged);
@@ -43,20 +45,23 @@ class _PortfolioManagerState extends State<PortfolioManager> {
 
   @override
   Widget build(BuildContext context) {
-    return RouteStateScope(notifier: _routeState, child: MaterialApp.router(
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routeParser,
-      theme: ThemeData(
-              pageTransitionsTheme: const PageTransitionsTheme(
-                builders: {
-                  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-                  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-                  TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-                  TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-                  TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-                },
+    return RouteStateScope(notifier: _routeState, child: PortfolioManagerAuthScope(
+      notifier: _auth,
+      child: MaterialApp.router(
+        routerDelegate: _routerDelegate,
+        routeInformationParser: _routeParser,
+        theme: ThemeData(
+                pageTransitionsTheme: const PageTransitionsTheme(
+                  builders: {
+                    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+                    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                    TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+                    TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+                    TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+                  },
+                ),
               ),
-            ),
+      ),
     ));
   }
 
