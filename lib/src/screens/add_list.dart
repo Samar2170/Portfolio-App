@@ -17,11 +17,8 @@ class _AddListScreenState extends State<AddListScreen> {
       appBar: AppBar(
         title: const Text('Portfolio'),
       ),
-      body: TabBarView(
-        children: [
+      body: 
           AddNavList(navOptions: navOptions.where((navOption) => navOption.navCategory.category == 'add').toList()),
-        ],
-      )
-    );
+      );
   }
 }

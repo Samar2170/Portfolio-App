@@ -32,12 +32,9 @@ class _PortfolioScreenState extends State<PortfolioScreen>
       appBar: AppBar(
         title: const Text('Portfolio'),
       ),
-      body: TabBarView(
-        children: [
+      body: 
           PortfolioNavList(navOptions: navOptions.where((navOption) => navOption.navCategory.category == 'portfolio').toList()),
-        ],
-      )
-    );
+      );
   }
 }
 
