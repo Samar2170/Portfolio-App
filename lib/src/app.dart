@@ -27,7 +27,7 @@ class _PortfolioManagerState extends State<PortfolioManager> {
         '/add',
       ],
       guard: _guard,
-      initialRoute: '/signin',
+      initialRoute: '/portfolio',
     );
 
     _routeState = RouteState(_routeParser);

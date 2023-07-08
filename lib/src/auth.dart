@@ -7,6 +7,7 @@ class PortfolioManagerAuth extends ChangeNotifier {
   bool _signedIn = false;
   bool get signedIn => _signedIn;
 
+
   Future<void> signOut() async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
     _signedIn = false;
@@ -14,6 +15,13 @@ class PortfolioManagerAuth extends ChangeNotifier {
   }
 
   Future<bool> signIn(String username, String password) async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    final String? token = localStorage.getString('token');
+    if (token != null) {
+      _signedIn = true;
+      notifyListeners();
+      return _signedIn;
+    }
     var response = await http.post(Uri.parse('http://127.0.0.1:8000/portfolio/login/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

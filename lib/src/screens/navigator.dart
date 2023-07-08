@@ -46,6 +46,10 @@ class _PortfolioManagerNavigatorState extends State<PortfolioMangerNavigator> {
               },
             ),
           )
+
+          else if (routeState.route.pathTemplate == '/portfolio')
+            FadeTransitionPage<void>(key: _scaffoldKey, 
+              child: const PortfolioScaffold())
           else ...[
             FadeTransitionPage<void>(key: _scaffoldKey, 
               child: const PortfolioScaffold()),
