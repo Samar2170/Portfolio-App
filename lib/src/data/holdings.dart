@@ -1,6 +1,7 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../helpers.dart';
 
 class Holding {
   String name;
@@ -36,12 +37,24 @@ class Response {
 Future<List<Holding>> getHoldings() async {
     await dotenv.load(fileName: ".env");
     final String? host = dotenv.env['HOST'];
-    final response = await http.get(Uri.parse('{$host}portfolio/get-holdings/'));
+    final uri = "${host}portfolio/get-holdings/";
+    print(uri);
+    final request = BaseRequest(
+      url: uri, headers: {}, body: {}, method: 'GET');
+    print(request);
+    final response = await request.execute();
+    print(response.body);
     if (response.statusCode  == 200) {
       final data = jsonDecode(response.body);
-      final holdings = data['data'].map((holding) => Holding.fromJson(holding)).toList();
+      print("data\n\n");
+      print(data);
+      final List<Holding> holdings = <Holding>[];
+      for (final d in data['data']) {
+        holdings.add(Holding.fromJson(d));
+      }
+      print(holdings);
       return holdings;
     } else {
-      throw Exception('Failed to load holdings');
+      return [];
     }
 }

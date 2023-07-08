@@ -6,6 +6,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'dart:io' show Platform;
 
 void main() {
+
   setHashUrlStrategy();
   setupWindow();
   runApp(const PortfolioManager());

@@ -1,10 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 class BaseRequest {
   final String url;
   final Map<String, String> headers;
   final Map<String, dynamic> body;
   final String method;
+  final token = '';
 
   BaseRequest({
     required this.url,
@@ -13,18 +17,26 @@ class BaseRequest {
     required this.method,
   });
 
-  Future<http.Response> execute() {
+  Future<Map<String,String>> modifyHeaders(Map<String, String> headers) async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    headers['Authorization'] = 'Bearer ${localStorage.getString('token')}';
+    return headers;
+  }
+
+  Future<http.Response> execute() async {
+    final _headers = await modifyHeaders(headers);
     switch (method) {
       case 'GET':
-        return http.get(Uri.parse(url), headers: headers);
+        print(headers);
+        return http.get(Uri.parse(url), headers: _headers);
       case 'POST':
-        return http.post(Uri.parse(url), headers: headers, body: jsonEncode(body));
+        return http.post(Uri.parse(url), headers: _headers, body: jsonEncode(body));
       case 'PUT':
-        return http.put(Uri.parse(url), headers: headers, body: jsonEncode(body));
+        return http.put(Uri.parse(url), headers: _headers, body: jsonEncode(body));
       case 'DELETE':
-        return http.delete(Uri.parse(url), headers: headers);
+        return http.delete(Uri.parse(url), headers: _headers);
       default:
-        return http.get(Uri.parse(url), headers: headers);
+        return http.get(Uri.parse(url), headers: _headers);
     }
   }
 }

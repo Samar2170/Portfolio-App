@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_app/src/screens/holdings_screen.dart';
 import '../routing.dart';
 
 
@@ -65,7 +66,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
           TabBarView(
             controller: _tabController,
             children:  const [
-              Text('Holdings'),
+              HoldingsScreen(),
               Text('Agg Holdings'),
               Text('Snapshot')
             ]
